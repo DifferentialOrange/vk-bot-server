@@ -11,4 +11,4 @@ RUN mkdir -p tmp
 
 RUN tarantoolctl rocks make
 
-ENTRYPOINT ./start.sh
+ENTRYPOINT [ "tarantool", "init.lua" ]
