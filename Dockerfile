@@ -11,4 +11,4 @@ RUN mkdir -p tmp
 
 RUN tarantoolctl rocks make
 
-ENTRYPOINT [ "tarantool", "init.lua" ]
+ENTRYPOINT TARANTOOL_HTTP_PORT=$PORT tarantool init.lua
