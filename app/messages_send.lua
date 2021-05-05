@@ -14,6 +14,7 @@ local function response(object, message)
     local msg_body = {
         peer_id = object.message.peer_id,
         message = message,
+        random_id = math.random(1000000),
     }
     local resp = http_client.post(endpoint, json.encode(msg_body))
 
