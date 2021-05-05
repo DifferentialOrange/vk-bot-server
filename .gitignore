@@ -20,4 +20,3 @@ __pycache__
 node_modules
 /tmp/*
 !/tmp/.keep
-/app/confirmation_string.lua
