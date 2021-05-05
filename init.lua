@@ -3,7 +3,8 @@
 local host_port = os.getenv('PORT') or 8081
 
 local handlers = {
-    confirmation = require('app.confirmation')
+    confirmation = require('app.confirmation'),
+    message_new  = require('app.message_new')
 }
 
 local function api_handler(request)
