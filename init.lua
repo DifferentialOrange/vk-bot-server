@@ -1,27 +1,21 @@
 #!/usr/bin/env tarantool
 
 local host_port = os.getenv('PORT') or 8081
-local confirmation_token = os.getenv('VK_BOT_CONFIRMATION')
+
+local handlers = {
+    confirmation = require('app.confirmation')
+}
 
 local function api_handler(request)
     local body = request:json()
-    if body.type == 'confirmation' then
-        if confirmation_token == nil then
-            return {
-                status = 500,
-                body = 'VK_BOT_CONFIRMATION not set'
-            }
-        end
-        return {
-            status = 200,
-            body = confirmation_token,
-        }
-    else
+    if handlers[body.type] == nil then
         return {
             status = 500,
-            body = 'Not implemented yet'
+            body = ('Request of %s type is not supported'):format()
         }
     end
+
+    return handlers[body.type](body.object)
 end
 
 local server = require('http.server').new(nil, host_port)
