@@ -17,10 +17,11 @@ local function response(object, message)
         random_id = math.random(1000000),
     }
     local resp = http_client.post(endpoint, json.encode(msg_body))
+    local resp_json = json.decode(resp.body)
 
-    if resp.status ~= 200 then
-        log.warn('Got status %d on message send: %s', resp.status, resp.body)
-        return nil, json.decode(resp.body)
+    if resp_json.error ~= nil then
+        log.error('Got error on message send: %s', resp_json.error.error_msg)
+        return nil, resp_json.error.error_msg
     end
 
     log.verbose('Got OK response')
