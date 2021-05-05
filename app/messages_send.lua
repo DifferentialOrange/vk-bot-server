@@ -15,7 +15,8 @@ local function response(object, message)
         peer_id = object.message.peer_id,
         message = message,
     }
-    local resp = http_client.post(utils.add_params_to_query(const.VK_API_ENDPOINT .. 'messages.send', params))
+    local query = utils.add_params_to_query(const.VK_API_ENDPOINT .. 'messages.send', params)
+    local resp = http_client.post(query)
 
     if resp.status ~= 200 then
         log.error('Got %d error on message send: %s', resp.status, resp.body)
