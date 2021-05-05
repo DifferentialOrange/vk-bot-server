@@ -1,11 +1,11 @@
 local log = require('log')
 
-local confirmation_token = os.getenv('VK_BOT_CONFIRMATION')
+local const = require('app.const')
 
 local function handler(_)
     log.verbose('Process confirmation request')
 
-    if confirmation_token == nil then
+    if const.VK_BOT_CONFIRMATION == nil then
         log.error('VK_BOT_CONFIRMATION is not set, can not respond to confirmation request')
         return {
             status = 500,
@@ -15,7 +15,7 @@ local function handler(_)
 
     return {
         status = 200,
-        body = confirmation_token,
+        body = const.VK_BOT_CONFIRMATION,
     }
 end
 
