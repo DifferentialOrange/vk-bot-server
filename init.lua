@@ -1,18 +1,21 @@
 #!/usr/bin/env tarantool
 
+local log = require('log')
+
 local host_port = os.getenv('PORT') or 8081
 
 local handlers = {
-    confirmation = require('app.confirmation'),
-    message_new  = require('app.message_new')
+    confirmation = require('app.handler.confirmation'),
+    message_new  = require('app.handler.message_new')
 }
 
 local function api_handler(request)
     local body = request:json()
     if handlers[body.type] == nil then
+        log.verbose('Unsupported request type %s', body.type)
         return {
-            status = 500,
-            body = ('Request of %s type is not supported'):format()
+            status = 200,
+            body = ('Request of %s type is not supported'):format(body.type)
         }
     end
 
