@@ -16,11 +16,20 @@ local function response(object, message)
         message = message,
     }
     local resp = http_client.post(utils.add_params_to_query(const.VK_API_ENDPOINT .. 'messages.send', params))
-    local resp_json = json.decode(resp.body)
 
-    if resp_json.error ~= nil then
-        log.error('Got error on message send: %s', resp_json.error.error_msg)
-        return nil, resp_json.error.error_msg
+    if resp.status ~= 200 then
+        log.error('Got %d error on message send: %s', resp.status, resp.body)
+        return nil, resp.body
+    end
+
+    local json_status, resp_body = pcall(json.decode, resp.body)
+    if not json_status then
+        resp_body = resp.body
+    end
+
+    if (type(resp_body) == 'table') and (resp_body.error ~= nil) then
+        log.error('Got error on message send: %s', resp_body.error.error_msg)
+        return nil, resp_body.error.error_msg
     end
 
     log.verbose('Got OK response')
