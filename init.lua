@@ -23,3 +23,5 @@ local server = require('http.server').new(nil, host_port)
 server:route({ method = 'POST', path = '/api' }, api_handler)
 
 server:start()
+
+box.cfg{ log_level = 6 }
